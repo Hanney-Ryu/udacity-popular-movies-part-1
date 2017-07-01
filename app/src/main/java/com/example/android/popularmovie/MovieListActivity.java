@@ -92,7 +92,6 @@ public class MovieListActivity extends AppCompatActivity implements LoaderManage
 
     @Override
     public void onLoaderReset(Loader<List<Movie>> loader) {
-        //TODO: Fix Error when click up button
-        //mMoviesListAdapter.updateItems(null);
+        loader = null;
     }
 }
