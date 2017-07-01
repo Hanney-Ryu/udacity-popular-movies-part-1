@@ -130,7 +130,7 @@ public class QueryUtils {
                     id = result.getString(JSON_KEY_ID);
                     title = result.getString(JSON_KEY_TITLE);
                     voteAverage = result.getString(JSON_KEY_VOTE_AVERAGE);
-                    posterPath = result.getString(JSON_KEY_POSTER_PATH);
+                    posterPath = result.getString(JSON_KEY_POSTER_PATH).substring(1); //remove '/'
                     overview = result.getString(JSON_KEY_OVERVIEW);
                     releaseDate = result.getString(JSON_KEY_RELEASE_DATE);
                     movies.add(new Movie(id, title, voteAverage, posterPath, overview, releaseDate));

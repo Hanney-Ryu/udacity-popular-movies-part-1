@@ -1,12 +1,14 @@
 package com.example.android.popularmovie;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -17,6 +19,9 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     private LayoutInflater mLayoutInflater;
     private List<Movie> mMovies;
     private Context mContext;
+
+    private static final String THE_MOVIE_DB_IMAGE_REQUEST_URL = "https://image.tmdb.org/t/p/w185";
+
 
     public MovieListAdapter(Context context, List<Movie> movies) {
         mMovies = movies;
@@ -32,8 +37,12 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
 
     @Override
     public void onBindViewHolder(MovieHolder holder, int position) {
-        holder.moviePoster.setImageResource(R.drawable.poster_sample);
-        holder.textView.setText(mMovies.get(position).getTitle());
+        Uri.Builder uriBuilder = Uri.parse(THE_MOVIE_DB_IMAGE_REQUEST_URL)
+                .buildUpon()
+                .appendPath(mMovies.get(position).getPosterPath());
+        Picasso.with(mContext)
+                .load(uriBuilder.toString())
+                .into(holder.moviePosterImageView);
     }
 
     @Override
@@ -42,13 +51,11 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     }
 
     public class MovieHolder extends RecyclerView.ViewHolder {
-        private ImageView moviePoster;
-        private TextView textView;
+        private ImageView moviePosterImageView;
 
         public MovieHolder(View itemView) {
             super(itemView);
-            moviePoster = (ImageView) itemView.findViewById(R.id.movie_list_poster_image);
-            textView = (TextView) itemView.findViewById(R.id.movie_list_test_text);
+            moviePosterImageView = (ImageView) itemView.findViewById(R.id.movie_list_poster_image);
         }
     }
 
