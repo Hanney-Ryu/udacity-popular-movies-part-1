@@ -1,10 +1,8 @@
 package com.example.android.popularmovie;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,7 +11,6 @@ import com.squareup.picasso.Picasso;
 
 public class MovieDetailActivity extends AppCompatActivity {
     private static final String LOG_TAG = MovieDetailActivity.class.getSimpleName();
-    private static final String THE_MOVIE_DB_IMAGE_REQUEST_URL = "https://image.tmdb.org/t/p/w185";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,12 +24,10 @@ public class MovieDetailActivity extends AppCompatActivity {
         TextView overViewTextView = (TextView) findViewById(R.id.movie_detail_overview);
 
         Movie currentMovie = getIntent().getExtras().getParcelable("movie");
+        String requestUrlForPoster = QueryUtils.makeRequestUrlForPoster(currentMovie.getPosterPath());
 
-        Uri.Builder uriBuilder = Uri.parse(THE_MOVIE_DB_IMAGE_REQUEST_URL)
-                .buildUpon()
-                .appendPath(currentMovie.getPosterPath());
         Picasso.with(this)
-                .load(uriBuilder.toString())
+                .load(requestUrlForPoster)
                 .into(posterImageView);
 
         titleTextView.setText(currentMovie.getTitle());

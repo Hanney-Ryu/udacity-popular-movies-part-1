@@ -1,5 +1,6 @@
 package com.example.android.popularmovie;
 
+import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -13,7 +14,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -33,6 +33,11 @@ public class QueryUtils {
     private static final String JSON_KEY_OVERVIEW = "overview";
     private static final String JSON_KEY_RELEASE_DATE = "release_date";
 
+    private static final String THE_MOVIE_DB_REQUEST_URL = "https://api.themoviedb.org/3/movie";
+    private static final String PARAM_API_KEY = "api_key";
+    private static final String API_KEY = BuildConfig.THE_MOVIE_DB_API_KEY;
+    private static final String THE_MOVIE_DB_IMAGE_REQUEST_URL = "https://image.tmdb.org/t/p/w185";
+
     public static List<Movie> fetchMovieData(String requestUrl) {
         URL url = createUrl(requestUrl);
         String jsonResponse = null;
@@ -49,7 +54,6 @@ public class QueryUtils {
         } catch (MalformedURLException e) {
             Log.e(LOG_TAG, "Problem building the URL", e);
         }
-        Log.v(LOG_TAG, "url : " + url);
         return url;
     }
 
@@ -146,4 +150,18 @@ public class QueryUtils {
         return movies;
     }
 
+    public static String makeRequestUrlForMovieList(String pathForFilter){
+        Uri.Builder uriBuilder = Uri.parse(THE_MOVIE_DB_REQUEST_URL)
+                .buildUpon()
+                .appendPath(pathForFilter)
+                .appendQueryParameter(PARAM_API_KEY, API_KEY);
+        return uriBuilder.toString();
+    }
+
+    public static String makeRequestUrlForPoster(String posterPath){
+        Uri.Builder uriBuilder = Uri.parse(THE_MOVIE_DB_IMAGE_REQUEST_URL)
+                .buildUpon()
+                .appendPath(posterPath);
+        return uriBuilder.toString();
+    }
 }

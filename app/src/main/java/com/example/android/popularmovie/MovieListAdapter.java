@@ -1,7 +1,7 @@
 package com.example.android.popularmovie;
 
 import android.content.Context;
-import android.net.Uri;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,9 +20,6 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     private List<Movie> mMovies;
     private Context mContext;
 
-    private static final String THE_MOVIE_DB_IMAGE_REQUEST_URL = "https://image.tmdb.org/t/p/w185";
-
-
     public MovieListAdapter(Context context, List<Movie> movies) {
         mMovies = movies;
         mContext = context;
@@ -36,13 +33,18 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     }
 
     @Override
-    public void onBindViewHolder(MovieHolder holder, int position) {
-        Uri.Builder uriBuilder = Uri.parse(THE_MOVIE_DB_IMAGE_REQUEST_URL)
-                .buildUpon()
-                .appendPath(mMovies.get(position).getPosterPath());
+    public void onBindViewHolder(MovieHolder holder, final int position) {
         Picasso.with(mContext)
-                .load(uriBuilder.toString())
+                .load(QueryUtils.makeRequestUrlForPoster(mMovies.get(position).getPosterPath()))
                 .into(holder.moviePosterImageView);
+        holder.moviePosterImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, MovieDetailActivity.class);
+                intent.putExtra("movie", mMovies.get(position));
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override

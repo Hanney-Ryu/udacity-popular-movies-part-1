@@ -1,6 +1,5 @@
 package com.example.android.popularmovie;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -15,23 +14,20 @@ import java.util.List;
 
 public class MovieListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Movie>> {
     String LOG_TAG = MovieListActivity.class.getSimpleName();
-    private static final String API_KEY = BuildConfig.THE_MOVIE_DB_API_KEY;
 
-    private static final String THE_MOVIE_DB_REQUEST_URL = "https://api.themoviedb.org/3/movie";
     private static final String PATH_POPULAR = "popular";
     private static final String PATH_TOP_RATED = "top_rated";
-    private static final String PARAM_API_KEY = "api_key";
 
     private static final int MOVIE_LIST_COLUMN = 2;
 
     private static final int LOADER_ID_POPULAR = 0;
     private static final int LOADER_ID_TOP_RATED = 1;
+
     private int mCurrentLoaderId;
 
     private RecyclerView mMovieList;
     private MovieListAdapter mMoviesListAdapter;
     private Loader<List<Movie>> mMovieLoader;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,11 +80,8 @@ public class MovieListActivity extends AppCompatActivity implements LoaderManage
             default:
                 pathForFilter = PATH_POPULAR;
         }
-        Uri baseUri = Uri.parse(THE_MOVIE_DB_REQUEST_URL);
-        Uri.Builder uriBuilder = baseUri.buildUpon();
-        uriBuilder.appendPath(pathForFilter);
-        uriBuilder.appendQueryParameter(PARAM_API_KEY, API_KEY);
-        mMovieLoader = new MovieLoader(this, uriBuilder.build().toString());
+        String requestUrlForMovieList = QueryUtils.makeRequestUrlForMovieList(pathForFilter);
+        mMovieLoader = new MovieLoader(this, requestUrlForMovieList);
         return mMovieLoader;
     }
 
