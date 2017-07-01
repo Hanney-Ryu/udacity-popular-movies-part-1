@@ -60,6 +60,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     }
 
     public void updateItems(List<Movie> movies) {
+        mMovies.clear();
         mMovies.addAll(movies);
         notifyDataSetChanged();
     }

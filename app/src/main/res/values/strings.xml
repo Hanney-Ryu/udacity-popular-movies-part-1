@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Popular Movie</string>
+
     <string name="content_description_movie_poster">movie_poster</string>
+
+    <string name="menu_filter_popular">Popular</string>
+    <string name="menu_filter_top_rated">Top Rated</string>
 </resources>
