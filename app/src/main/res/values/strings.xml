@@ -3,6 +3,7 @@
 
     <string name="content_description_movie_poster">movie_poster</string>
     <string name="movie_list_not_connected">Not Connected</string>
+    <string name="movie_list_no_results">No results</string>
 
     <string name="menu_filter_popular">Popular</string>
     <string name="menu_filter_top_rated">Top Rated</string>

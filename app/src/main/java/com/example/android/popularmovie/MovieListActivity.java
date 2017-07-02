@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MovieListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Movie>> {
-    String LOG_TAG = MovieListActivity.class.getSimpleName();
 
     private static final String PATH_POPULAR = "popular";
     private static final String PATH_TOP_RATED = "top_rated";
@@ -33,6 +32,7 @@ public class MovieListActivity extends AppCompatActivity implements LoaderManage
 
     private ProgressBar mLoadingIndicator;
     private TextView mNoNetworkTextView;
+    private TextView mNoResultTextView;
     private RecyclerView mMovieList;
     private MovieListAdapter mMoviesListAdapter;
     private Loader<List<Movie>> mMovieLoader;
@@ -44,6 +44,7 @@ public class MovieListActivity extends AppCompatActivity implements LoaderManage
 
         mLoadingIndicator = (ProgressBar) findViewById(R.id.movie_list_loading_indicator);
         mNoNetworkTextView = (TextView) findViewById(R.id.movie_list_no_network_text_view);
+        mNoResultTextView = (TextView) findViewById(R.id.movie_list_no_result_text_view);
         mMovieList = (RecyclerView) findViewById(R.id.movie_list_recycler_view);
         mMovieList.setLayoutManager(new GridLayoutManager(this, MOVIE_LIST_COLUMN));
         mMovieList.setHasFixedSize(true);
@@ -103,7 +104,11 @@ public class MovieListActivity extends AppCompatActivity implements LoaderManage
     @Override
     public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> movies) {
         mLoadingIndicator.setVisibility(View.GONE);
-        mMoviesListAdapter.updateItems(movies);
+        if(movies == null || movies.size() == 0){
+            mNoResultTextView.setVisibility(View.VISIBLE);
+        } else {
+            mMoviesListAdapter.updateItems(movies);
+        }
     }
 
     @Override

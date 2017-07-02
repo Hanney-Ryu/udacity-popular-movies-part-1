@@ -13,6 +13,15 @@
         android:indeterminate="false" />
 
     <TextView
+        android:id="@+id/movie_list_no_result_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/movie_list_no_results"
+        android:textAppearance="?android:textAppearanceMedium"
+        android:visibility="gone" />
+
+    <TextView
         android:id="@+id/movie_list_no_network_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
