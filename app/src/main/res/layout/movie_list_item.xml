@@ -4,6 +4,5 @@
     android:id="@+id/movie_list_poster_image"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="0dp"
     android:adjustViewBounds="true"
     android:contentDescription="@string/content_description_movie_poster" />
