@@ -1,5 +1,8 @@
 package com.example.android.popularmovie;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -10,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +32,7 @@ public class MovieListActivity extends AppCompatActivity implements LoaderManage
     private int mCurrentLoaderId;
 
     private ProgressBar mLoadingIndicator;
+    private TextView mNoNetworkTextView;
     private RecyclerView mMovieList;
     private MovieListAdapter mMoviesListAdapter;
     private Loader<List<Movie>> mMovieLoader;
@@ -38,14 +43,20 @@ public class MovieListActivity extends AppCompatActivity implements LoaderManage
         setContentView(R.layout.activity_movie_list);
 
         mLoadingIndicator = (ProgressBar) findViewById(R.id.movie_list_loading_indicator);
+        mNoNetworkTextView = (TextView) findViewById(R.id.movie_list_no_network_text_view);
         mMovieList = (RecyclerView) findViewById(R.id.movie_list_recycler_view);
         mMovieList.setLayoutManager(new GridLayoutManager(this, MOVIE_LIST_COLUMN));
         mMovieList.setHasFixedSize(true);
         mMoviesListAdapter = new MovieListAdapter(this, new ArrayList<Movie>());
         mMovieList.setAdapter(mMoviesListAdapter);
 
-        mCurrentLoaderId = LOADER_ID_POPULAR;
-        getSupportLoaderManager().initLoader(LOADER_ID_POPULAR, null, this);
+        if(isConnected()){
+            getSupportLoaderManager().initLoader(LOADER_ID_POPULAR, null, this);
+            mCurrentLoaderId = LOADER_ID_POPULAR;
+        } else {
+            mLoadingIndicator.setVisibility(View.GONE);
+            mNoNetworkTextView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -98,5 +109,13 @@ public class MovieListActivity extends AppCompatActivity implements LoaderManage
     @Override
     public void onLoaderReset(Loader<List<Movie>> loader) {
         loader = null;
+    }
+
+    public boolean isConnected() {
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+        return networkInfo != null && networkInfo.isConnected();
     }
 }
