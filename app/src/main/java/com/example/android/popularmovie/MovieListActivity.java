@@ -8,6 +8,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +27,7 @@ public class MovieListActivity extends AppCompatActivity implements LoaderManage
 
     private int mCurrentLoaderId;
 
+    private ProgressBar mLoadingIndicator;
     private RecyclerView mMovieList;
     private MovieListAdapter mMoviesListAdapter;
     private Loader<List<Movie>> mMovieLoader;
@@ -34,7 +37,8 @@ public class MovieListActivity extends AppCompatActivity implements LoaderManage
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_list);
 
-        mMovieList = (RecyclerView) findViewById(R.id.recycler_view_movie);
+        mLoadingIndicator = (ProgressBar) findViewById(R.id.movie_list_loading_indicator);
+        mMovieList = (RecyclerView) findViewById(R.id.movie_list_recycler_view);
         mMovieList.setLayoutManager(new GridLayoutManager(this, MOVIE_LIST_COLUMN));
         mMovieList.setHasFixedSize(true);
         mMoviesListAdapter = new MovieListAdapter(this, new ArrayList<Movie>());
@@ -87,6 +91,7 @@ public class MovieListActivity extends AppCompatActivity implements LoaderManage
 
     @Override
     public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> movies) {
+        mLoadingIndicator.setVisibility(View.GONE);
         mMoviesListAdapter.updateItems(movies);
     }
 
