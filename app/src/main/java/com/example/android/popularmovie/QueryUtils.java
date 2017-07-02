@@ -131,13 +131,15 @@ public class QueryUtils {
                 JSONArray results = baseJsonResponse.getJSONArray(JSON_ARRAY_RESULTS);
                 for (int i = 0; i < results.length(); i++) {
                     JSONObject result = results.getJSONObject(i);
-                    id = result.getString(JSON_KEY_ID);
-                    title = result.getString(JSON_KEY_TITLE);
-                    voteAverage = result.getString(JSON_KEY_VOTE_AVERAGE);
-                    posterPath = result.getString(JSON_KEY_POSTER_PATH).substring(1); //remove '/'
-                    overview = result.getString(JSON_KEY_OVERVIEW);
-                    releaseDate = result.getString(JSON_KEY_RELEASE_DATE);
-                    movies.add(new Movie(id, title, voteAverage, posterPath, overview, releaseDate));
+                    if(hasAllElements(result)){
+                        id = result.getString(JSON_KEY_ID);
+                        title = result.getString(JSON_KEY_TITLE);
+                        voteAverage = result.getString(JSON_KEY_VOTE_AVERAGE);
+                        posterPath = result.getString(JSON_KEY_POSTER_PATH).substring(1); //remove '/'
+                        overview = result.getString(JSON_KEY_OVERVIEW);
+                        releaseDate = result.getString(JSON_KEY_RELEASE_DATE);
+                        movies.add(new Movie(id, title, voteAverage, posterPath, overview, releaseDate));
+                    }
                 }
             } else {
                 Log.i(LOG_TAG, "Not find JSON Object");
@@ -146,8 +148,13 @@ public class QueryUtils {
             Log.e(LOG_TAG, "JSON Exception", e);
             e.printStackTrace();
         }
-        Log.i(LOG_TAG, movies.get(0).toString());
         return movies;
+    }
+
+    private static boolean hasAllElements(JSONObject result) {
+        return result.has(JSON_KEY_ID) && result.has(JSON_KEY_TITLE)
+                && result.has(JSON_KEY_VOTE_AVERAGE) && result.has(JSON_KEY_POSTER_PATH)
+                && result.has(JSON_KEY_OVERVIEW) && result.has(JSON_KEY_RELEASE_DATE);
     }
 
     public static String makeRequestUrlForMovieList(String pathForFilter){
