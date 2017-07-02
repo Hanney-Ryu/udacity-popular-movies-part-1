@@ -7,10 +7,11 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.android.popularmovie.data.Movie;
+import com.example.android.popularmovie.util.QueryUtils;
 import com.squareup.picasso.Picasso;
 
 public class MovieDetailActivity extends AppCompatActivity {
-    private static final String LOG_TAG = MovieDetailActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +24,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         TextView voteAverageTextView = (TextView) findViewById(R.id.movie_detail_vote_average);
         TextView overViewTextView = (TextView) findViewById(R.id.movie_detail_overview);
 
-        Movie currentMovie = getIntent().getExtras().getParcelable("movie");
+        Movie currentMovie = getIntent().getExtras().getParcelable(Movie.class.getSimpleName());
         String requestUrlForPoster = QueryUtils.makeRequestUrlForPoster(currentMovie.getPosterPath());
 
         Picasso.with(this)
@@ -42,7 +43,8 @@ public class MovieDetailActivity extends AppCompatActivity {
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 }

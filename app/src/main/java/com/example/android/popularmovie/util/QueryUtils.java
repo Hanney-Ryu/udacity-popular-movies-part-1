@@ -1,8 +1,11 @@
-package com.example.android.popularmovie;
+package com.example.android.popularmovie.util;
 
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
+
+import com.example.android.popularmovie.BuildConfig;
+import com.example.android.popularmovie.data.Movie;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -129,17 +132,16 @@ public class QueryUtils {
             JSONObject baseJsonResponse = new JSONObject(jsonResponse);
             if (baseJsonResponse.has(JSON_ARRAY_RESULTS)) {
                 JSONArray results = baseJsonResponse.getJSONArray(JSON_ARRAY_RESULTS);
-                for (int i = 0; i < results.length(); i++) {
+                for (int i = 0; i < results.length()
+                        && hasAllElements(results.getJSONObject(i)); i++) {
                     JSONObject result = results.getJSONObject(i);
-                    if(hasAllElements(result)){
-                        id = result.getString(JSON_KEY_ID);
-                        title = result.getString(JSON_KEY_TITLE);
-                        voteAverage = result.getString(JSON_KEY_VOTE_AVERAGE);
-                        posterPath = result.getString(JSON_KEY_POSTER_PATH).substring(1); //remove '/'
-                        overview = result.getString(JSON_KEY_OVERVIEW);
-                        releaseDate = result.getString(JSON_KEY_RELEASE_DATE);
-                        movies.add(new Movie(id, title, voteAverage, posterPath, overview, releaseDate));
-                    }
+                    id = result.getString(JSON_KEY_ID);
+                    title = result.getString(JSON_KEY_TITLE);
+                    voteAverage = result.getString(JSON_KEY_VOTE_AVERAGE);
+                    posterPath = result.getString(JSON_KEY_POSTER_PATH).substring(1); //remove '/'
+                    overview = result.getString(JSON_KEY_OVERVIEW);
+                    releaseDate = result.getString(JSON_KEY_RELEASE_DATE);
+                    movies.add(new Movie(id, title, voteAverage, posterPath, overview, releaseDate));
                 }
             } else {
                 Log.i(LOG_TAG, "Not find JSON Object");
@@ -157,7 +159,7 @@ public class QueryUtils {
                 && result.has(JSON_KEY_OVERVIEW) && result.has(JSON_KEY_RELEASE_DATE);
     }
 
-    public static String makeRequestUrlForMovieList(String pathForFilter){
+    public static String makeRequestUrlForMovieList(String pathForFilter) {
         Uri.Builder uriBuilder = Uri.parse(THE_MOVIE_DB_REQUEST_URL)
                 .buildUpon()
                 .appendPath(pathForFilter)
@@ -165,7 +167,7 @@ public class QueryUtils {
         return uriBuilder.toString();
     }
 
-    public static String makeRequestUrlForPoster(String posterPath){
+    public static String makeRequestUrlForPoster(String posterPath) {
         Uri.Builder uriBuilder = Uri.parse(THE_MOVIE_DB_IMAGE_REQUEST_URL)
                 .buildUpon()
                 .appendPath(posterPath);

@@ -15,6 +15,9 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.android.popularmovie.data.Movie;
+import com.example.android.popularmovie.util.QueryUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 

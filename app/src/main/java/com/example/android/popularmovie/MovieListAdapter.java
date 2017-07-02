@@ -8,13 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.android.popularmovie.data.Movie;
+import com.example.android.popularmovie.util.QueryUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MovieHolder>{
-
-    private static final String LOG_TAG = MovieListAdapter.class.getSimpleName();
 
     private LayoutInflater mLayoutInflater;
     private List<Movie> mMovies;
@@ -41,7 +41,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, MovieDetailActivity.class);
-                intent.putExtra("movie", mMovies.get(position));
+                intent.putExtra(Movie.class.getSimpleName(), mMovies.get(position));
                 mContext.startActivity(intent);
             }
         });

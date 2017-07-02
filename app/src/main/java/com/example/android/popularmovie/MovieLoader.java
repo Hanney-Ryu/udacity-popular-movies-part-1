@@ -1,8 +1,10 @@
 package com.example.android.popularmovie;
 
 import android.content.Context;
-import android.net.Uri;
 import android.support.v4.content.AsyncTaskLoader;
+
+import com.example.android.popularmovie.data.Movie;
+import com.example.android.popularmovie.util.QueryUtils;
 
 import java.util.List;
 
