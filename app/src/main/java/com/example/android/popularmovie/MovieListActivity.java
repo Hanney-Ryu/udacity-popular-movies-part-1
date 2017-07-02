@@ -31,8 +31,6 @@ public class MovieListActivity extends AppCompatActivity implements LoaderManage
     private static final int LOADER_ID_POPULAR = 0;
     private static final int LOADER_ID_TOP_RATED = 1;
 
-    private int mCurrentLoaderId;
-
     private ProgressBar mLoadingIndicator;
     private TextView mNoNetworkTextView;
     private TextView mNoResultTextView;
@@ -54,9 +52,8 @@ public class MovieListActivity extends AppCompatActivity implements LoaderManage
         mMoviesListAdapter = new MovieListAdapter(this, new ArrayList<Movie>());
         mMovieList.setAdapter(mMoviesListAdapter);
 
-        if(isConnected()){
+        if (isConnected()) {
             getSupportLoaderManager().initLoader(LOADER_ID_POPULAR, null, this);
-            mCurrentLoaderId = LOADER_ID_POPULAR;
         } else {
             mLoadingIndicator.setVisibility(View.GONE);
             mNoNetworkTextView.setVisibility(View.VISIBLE);
@@ -71,18 +68,12 @@ public class MovieListActivity extends AppCompatActivity implements LoaderManage
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.action_filter_popular:
-                if(mCurrentLoaderId == LOADER_ID_TOP_RATED){
-                    getSupportLoaderManager().restartLoader(LOADER_ID_POPULAR, null, this);
-                    mCurrentLoaderId = LOADER_ID_POPULAR;
-                }
+                getSupportLoaderManager().restartLoader(LOADER_ID_POPULAR, null, this);
                 return true;
             case R.id.action_filter_top_rated:
-                if(mCurrentLoaderId == LOADER_ID_POPULAR){
-                    getSupportLoaderManager().restartLoader(LOADER_ID_TOP_RATED, null, this);
-                    mCurrentLoaderId = LOADER_ID_TOP_RATED;
-                }
+                getSupportLoaderManager().restartLoader(LOADER_ID_TOP_RATED, null, this);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -92,7 +83,7 @@ public class MovieListActivity extends AppCompatActivity implements LoaderManage
     @Override
     public Loader<List<Movie>> onCreateLoader(int loaderId, Bundle args) {
         String pathForFilter = "";
-        switch (loaderId){
+        switch (loaderId) {
             case LOADER_ID_TOP_RATED:
                 pathForFilter = PATH_TOP_RATED;
                 break;
@@ -107,7 +98,7 @@ public class MovieListActivity extends AppCompatActivity implements LoaderManage
     @Override
     public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> movies) {
         mLoadingIndicator.setVisibility(View.GONE);
-        if(movies == null || movies.size() == 0){
+        if (movies == null || movies.size() == 0) {
             mNoResultTextView.setVisibility(View.VISIBLE);
         } else {
             mMoviesListAdapter.updateItems(movies);
